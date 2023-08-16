@@ -22,4 +22,8 @@ export class TokenController {
     getTokens(@Param('userId') userId){
         return this.tokenService.getAllTokens(userId)
     }
+    @Get('getAll/:userId/:validityStatus')
+    getTokensByStatus(@Param('userId') userId, @Param('validityStatus') validityStatus,){
+        return this.tokenService.getTokenByStatus(userId, validityStatus)
+    }
 }

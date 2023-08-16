@@ -1,16 +1,18 @@
 import { useProperty } from 'Framework/View';
 import { useInteraction } from 'Framework/View/Hooks/useInteraction';
 import { PageLayout } from 'View/Layout';
-import { Box, FormControl,Label,Input, Button } from "View/Common";
+import { Box, FormControl,Label,Input, Button, Paragraph } from "View/Common";
 import { Spacer } from "View/Common/Layout/Spacer";
 import { useEffect } from 'react';
 import Actions ,{ useDispatch } from 'Flux';
 import { authenticationSlice } from 'Flux/Slice/Authentication/AuthenticationSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 export const RegisterPage = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const firstName$ = useProperty<string>("");
     const lastName$ = useProperty<string>("");
@@ -31,6 +33,7 @@ export const RegisterPage = () => {
                     password: password$.value,
                 })
             )
+            navigate("/")
         })
 
         return () => onSubmit$$.unsubscribe()
@@ -63,6 +66,9 @@ export const RegisterPage = () => {
                 <Label>Password</Label>
                 <Input type='password' onChange$={password$} placeholder={"Password"} />
             </FormControl>
+            <div className='flex justify-center items-center'>
+                <Paragraph>Already have an account? <a href='/' className='underline cursor-pointer text-blue-400'>Signin</a></Paragraph>
+            </div>
             <Spacer/>
             </Box>
         </PageLayout>

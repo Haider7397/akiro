@@ -1,6 +1,8 @@
 import { cva, VariantProps } from 'class-variance-authority'
 import { PropsWithChildren, ReactNode } from 'react'
-import { Heading2 } from '../Typography/Heading2'
+import { Heading } from '../Heading/Heading';
+
+
 
 const box = cva('relative p-3 sm:p-6 md:p-12 border border-gray-300 rounded-2xl bg-white shadow-lg h-full flex flex-col max-w-6xl', {
   variants: {},
@@ -15,7 +17,7 @@ export const Box = ({ children, title, action }: IProps) => {
   return (
     <div className={box({})}>
       {title && <>
-        <Heading2>{title}</Heading2>
+        <Heading>{title}</Heading>
         <hr />
       </>
       }

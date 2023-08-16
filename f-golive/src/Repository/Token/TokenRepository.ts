@@ -13,3 +13,7 @@ export const validate = (data:{ token: string;}): Observable<IToken> => {
 export const getAllTokens = (data: {userId:string}, user?: IUser): Observable<{data:IToken[]}> => {
     return get(`${Environment.API_URL}/token/getAll/${data.userId}`,data, user)
 }
+
+export const getTokensByStatus = (data: {userId:string, validityStatus:string}, user?: IUser): Observable<{data:IToken[]}> => {
+    return get(`${Environment.API_URL}/token/getAll/${data.userId}/${data.validityStatus}`,data, user)
+}

@@ -60,7 +60,6 @@ const reducers = {
     state: Draft<ITokenState>,
     action: PayloadAction<{ userId: string;}>
   ) => {
-    console.log(action)
     state.openRequests.push(action.type);
   },
   GetAllTokenSuccess: (
@@ -71,6 +70,25 @@ const reducers = {
     state.openRequests = removeRequest(state, action);
   },
   GetAllTokenFailure: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ error: Error }>
+  ) => {
+    state.openRequests = removeRequest(state, action);
+  },
+  GetTokenByStatusRequest: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ userId: string; validityStatus:string}>
+  ) => {
+    state.openRequests.push(action.type);
+  },
+  GetTokenByStatusSuccess: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ data: IToken[]}>
+  ) => {
+    state.tokens = action.payload.data;
+    state.openRequests = removeRequest(state, action);
+  },
+  GetTokenByStatusFailure: (
     state: Draft<ITokenState>,
     action: PayloadAction<{ error: Error }>
   ) => {

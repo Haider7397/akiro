@@ -89,4 +89,23 @@ export class TokenService {
 
     }
 
+    async getTokenByStatus(userId: string, validityStatus: string){
+
+        try{
+            const tokens = await this.prisma.token.findMany({
+                where:{
+                    userId: userId,
+                    validityStatus: validityStatus
+                }
+            })
+
+            return {
+                data:tokens
+            }
+        }catch (error) {
+            throw error
+        }
+
+    }
+
 }

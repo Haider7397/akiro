@@ -1,7 +1,7 @@
 import { useProperty } from 'Framework/View';
 import { useInteraction } from 'Framework/View/Hooks/useInteraction';
 import { PageLayout } from 'View/Layout';
-import { Box, FormControl,Label,Input, Button } from "View/Common";
+import { Box, FormControl,Label,Input, Button, Paragraph } from "View/Common";
 import { Spacer } from "View/Common/Layout/Spacer";
 import { useEffect } from 'react';
 import Actions ,{ useDispatch } from 'Flux';
@@ -33,6 +33,7 @@ export const LoginPage = () => {
         return () => onSubmit$$.unsubscribe()
     },[onSubmit$])
 
+
     if (authenticatedUser) {
         return <Navigate to={'/home'} />
       }
@@ -52,6 +53,9 @@ export const LoginPage = () => {
                 <Label>Password</Label>
                 <Input type='password' onChange$={password$} placeholder={"Password"} />
             </FormControl>
+            <div className='flex justify-center items-center'>
+                <Paragraph>Don't have an account? <a href='/register' className='underline cursor-pointer text-blue-400'>Signup</a></Paragraph>
+            </div>
             <Spacer/>
             </Box>
         </PageLayout>

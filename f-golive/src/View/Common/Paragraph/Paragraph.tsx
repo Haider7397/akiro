@@ -1,10 +1,31 @@
-import { FunctionComponent, PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
+import { cva, VariantProps } from 'class-variance-authority'
 
-export interface IParagraphProps extends PropsWithChildren {
+const paragraph = cva('', {
+    variants: {
+        color: {
+            primary: 'text-primary',
+            default: 'text-font-default',
+            contrast: 'text-font-contrast',
+            error: 'text-font-error',
+
+        },
+        highlight: {
+            bold: 'font-bold',
+            none: '',
+        },
+    },
+    defaultVariants: {
+        color: 'default',
+        highlight: 'none',
+    },
+})
+
+interface IProps extends PropsWithChildren, VariantProps<typeof paragraph> {
 }
 
-export const paragraphClasses = 'text-sm font-normal'
-
-export const Paragraph: FunctionComponent<IParagraphProps> = ({ children }) => {
-  return <p className={`${paragraphClasses}`}>{children}</p>
+export const Paragraph = ({ children, color }: IProps) => {
+    return (
+        <p className={paragraph({ color })}>{children}</p>
+    )
 }

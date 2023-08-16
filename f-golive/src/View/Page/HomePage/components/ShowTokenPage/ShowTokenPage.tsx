@@ -3,8 +3,9 @@ import { Button, FormControl, Input, Label, Table } from "View/Common";
 import { useEffect, useState } from "react";
 import Actions, { useDispatch } from 'Flux';
 import { tokenSlice } from "Flux/Slice/Token/TokenSlice";
-import { useGetAllToken, useGetAuthenticatedUser } from "Flux/Selector";
+import { useGetAllToken, useGetAuthenticatedUser, useGetTokenStatus } from "Flux/Selector";
 import { useInteraction } from "Framework/View/Hooks/useInteraction";
+import { Spacer } from "View/Common/Layout/Spacer";
 
 export const ShowTokenPage = () =>{
 
@@ -15,12 +16,14 @@ export const ShowTokenPage = () =>{
     const onStart$ = useInteraction<void>();
     const onStop$ = useInteraction<void>();
     const onValidate$ = useInteraction<string>();
+    const onSort$ = useInteraction<string>();
 
     const [loop, setLoop] = useState<boolean>(false);
     const [intervalID, setIntervalID] = useState<any>();
  
     const authenticatedUser = useGetAuthenticatedUser()
     const tokens = useGetAllToken()
+    const validityStatus = useGetTokenStatus()
 
     useEffect(() => {
         const onStart$$ = onStart$.subscribe((value:any) => {
@@ -50,7 +53,7 @@ export const ShowTokenPage = () =>{
                 userId: authenticatedUser?.user.id,
             }) 
         )
-    },[])
+    },[validityStatus])
 
     useEffect(() => {
         const onValidate$$ = onValidate$.subscribe((value:string) => {
@@ -68,6 +71,24 @@ export const ShowTokenPage = () =>{
 
         return () => onValidate$$.unsubscribe()
     }, [onValidate$, dispatch])
+
+    useEffect(() => {
+        const onSort$$ = onSort$.subscribe((value:string) => {
+            value === "all" && dispatch(
+                Actions[tokenSlice.name].GetAllTokenRequest({
+                    userId: authenticatedUser?.user.id,
+                }) 
+            )
+            value !== "all" && dispatch(
+                Actions[tokenSlice.name].GetTokenByStatusRequest({
+                    userId: authenticatedUser?.user.id,
+                    validityStatus:value
+                }) 
+            )
+        })
+
+        return () => onSort$$.unsubscribe()
+    }, [onSort$, dispatch])
 
     useEffect(() => {
         const onStop$$ = onStop$.subscribe((value:any) => {
@@ -89,6 +110,13 @@ export const ShowTokenPage = () =>{
                 !loop ? <Button variant='primary' onClick$={onStart$} value={undefined}>Start</Button>:
                 <Button variant='primary' onClick$={onStop$} value={undefined}>Stop</Button>
             }
+            <Spacer/>
+            <div className="flex justify-evenly">
+                <Button variant={"primary"} onClick$={onSort$} value={"all"}>All</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"valid"}>Valid</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"invalid"}>Invalid</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"unknown"}>Unknown</Button>
+            </div>
             <Table>
                 <Table.Head>
                     <Table.Row>
