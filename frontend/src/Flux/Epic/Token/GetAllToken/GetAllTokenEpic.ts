@@ -1,14 +1,15 @@
 import { filter, mergeMap, of } from 'rxjs'
-import { catchError, retryWhen } from 'rxjs/operators'
+import { catchError, retryWhen, withLatestFrom } from 'rxjs/operators'
 import { serverIsNotAvailable } from '../../../../Framework/Epic/ServerNotAvailable'
 import { Epic } from '../../../index'
 import { tokenSlice } from 'Flux/Slice/Token/TokenSlice'
 
-export const GetAllTokenEpic: Epic = (action$, _, { TokenRepository, [tokenSlice.name]: token }) =>
+export const GetAllTokenEpic: Epic = (action$, state$, { TokenRepository, [tokenSlice.name]: token }) =>
 action$.pipe(
   filter(token.GetAllTokenRequest.match),
-  mergeMap((action: any) =>
-  TokenRepository.getAllTokens(action.payload).pipe(
+  withLatestFrom(state$),
+  mergeMap(([action, state]) =>
+  TokenRepository.getAllTokens(action.payload, state.authentication.user).pipe(
       mergeMap((response) => {
         if (response instanceof Error) {
           throw response

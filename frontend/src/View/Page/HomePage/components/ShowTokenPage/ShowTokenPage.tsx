@@ -19,6 +19,7 @@ export const ShowTokenPage = () =>{
     const onSort$ = useInteraction<string>();
 
     const [loop, setLoop] = useState<boolean>(false);
+    const [fetchAfterValidate, setFetchAfterValidate] = useState<boolean>(false);
     const [intervalID, setIntervalID] = useState<any>();
  
     const authenticatedUser = useGetAuthenticatedUser()
@@ -31,13 +32,13 @@ export const ShowTokenPage = () =>{
             setIntervalID(setInterval(()=>{
                 dispatch(
                     Actions[tokenSlice.name].CreateTokenRequest({
-                        id: authenticatedUser?.user.id,
+                        id: authenticatedUser?.id!,
                         allowedDigits: allowedDigits$.value
                     })
                 )
                 dispatch(
                     Actions[tokenSlice.name].GetAllTokenRequest({
-                        userId: authenticatedUser?.user.id,
+                        userId: authenticatedUser?.id!,
                     }) 
                 )
             },2000))
@@ -50,10 +51,11 @@ export const ShowTokenPage = () =>{
     useEffect(()=>{
         dispatch(
             Actions[tokenSlice.name].GetAllTokenRequest({
-                userId: authenticatedUser?.user.id,
+                userId: authenticatedUser?.id!,
             }) 
         )
-    },[validityStatus])
+        setFetchAfterValidate(false)
+    },[fetchAfterValidate])
 
     useEffect(() => {
         const onValidate$$ = onValidate$.subscribe((value:string) => {
@@ -62,11 +64,7 @@ export const ShowTokenPage = () =>{
                     token: value,
                 })
             )
-            dispatch(
-                Actions[tokenSlice.name].GetAllTokenRequest({
-                    userId: authenticatedUser?.user.id,
-                }) 
-            )
+            setFetchAfterValidate(true)
         })
 
         return () => onValidate$$.unsubscribe()
@@ -76,12 +74,12 @@ export const ShowTokenPage = () =>{
         const onSort$$ = onSort$.subscribe((value:string) => {
             value === "all" && dispatch(
                 Actions[tokenSlice.name].GetAllTokenRequest({
-                    userId: authenticatedUser?.user.id,
+                    userId: authenticatedUser?.id!,
                 }) 
             )
             value !== "all" && dispatch(
                 Actions[tokenSlice.name].GetTokenByStatusRequest({
-                    userId: authenticatedUser?.user.id,
+                    userId: authenticatedUser?.id!,
                     validityStatus:value
                 }) 
             )

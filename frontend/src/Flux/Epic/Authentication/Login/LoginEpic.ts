@@ -14,7 +14,7 @@ export const loginEpic: Epic = (action$, _, { AuthenticationRepository, [authent
           if (response instanceof Error) {
             throw response
           }
-          return of(authentication.loginSuccess({ user: response }))
+          return of(authentication.loginSuccess(response))
         }),
         retryWhen(serverIsNotAvailable()),
         catchError((error) => of(authentication.loginFailure({ error }))),

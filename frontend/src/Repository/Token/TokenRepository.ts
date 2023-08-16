@@ -3,11 +3,11 @@ import { post,get } from '../../Repository'
 import { Observable } from 'rxjs'
 import { IToken, IUser } from '../../Model'
 
-export const generate = (data:{ id: string; allowedDigits: string }): Observable<IToken> => {
-    return post(`${Environment.API_URL}/token/create`, data)
+export const generate = (data:{ id: string; allowedDigits: string},user?:IUser): Observable<{data:IToken}> => {
+    return post(`${Environment.API_URL}/token/create`, data, user)
 }
-export const validate = (data:{ token: string;}): Observable<IToken> => {
-    return post(`${Environment.API_URL}/token/validate`, data)
+export const validate = (data:{ token: string} ,user?:IUser): Observable<{data:IToken}> => {
+    return post(`${Environment.API_URL}/token/validate`, data, user)
 }
 
 export const getAllTokens = (data: {userId:string}, user?: IUser): Observable<{data:IToken[]}> => {

@@ -27,7 +27,7 @@ const reducers = {
     state: Draft<ITokenState>,
     action: PayloadAction<{ data: IToken }>
   ) => {
-    state.token = action.payload.data.data;
+    state.token = action.payload.data;
     state.openRequests = removeRequest(state, action);
   },
   CreateTokenFailure: (
@@ -46,8 +46,8 @@ const reducers = {
     state: Draft<ITokenState>,
     action: PayloadAction<{ data: IToken }>
   ) => {
-    state.token = action.payload.data.data;
-    state.tokenStatus = action.payload.data.data.validityStatus;
+    state.token = action.payload.data;
+    state.tokenStatus = action.payload.data.validityStatus;
     state.openRequests = removeRequest(state, action);
   },
   ValidateTokenFailure: (

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs'
 import { IUser } from '../../Model'
 
 
-export const authenticate = (data: { email: string; password: string }): Observable<IUser> => {
+export const authenticate = (data: { email: string; password: string }): Observable<{user:IUser}> => {
     return post(`${Environment.API_URL}/auth/signin`, data)
 }
 

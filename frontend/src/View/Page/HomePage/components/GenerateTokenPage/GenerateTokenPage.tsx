@@ -24,7 +24,7 @@ export const GenerateTokenPage = () => {
         const onGenerate$$ = onGenerate$.subscribe(() => {
             dispatch(
                 Actions[tokenSlice.name].CreateTokenRequest({
-                    id: authenticatedUser?.user.id,
+                    id: authenticatedUser?.id!,
                     allowedDigits: allowedDigits$.value
                 })
             )
