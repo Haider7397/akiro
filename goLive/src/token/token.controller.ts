@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Body, Controller, Post} from "@nestjs/common";
+import { Body, Controller, Get, Param, Post} from "@nestjs/common";
 import { TokenService } from "./token.service";
 import { CreateTokenDto, ValidateTokenDto } from "./dto";
 
@@ -16,5 +16,10 @@ export class TokenController {
     @Post('validate')
     validate(@Body() dto:ValidateTokenDto){
         return this.tokenService.validate(dto)
+    }
+
+    @Get('getAll/:userId')
+    getTokens(@Param('userId') userId){
+        return this.tokenService.getAllTokens(userId)
     }
 }

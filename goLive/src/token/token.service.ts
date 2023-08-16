@@ -71,4 +71,20 @@ export class TokenService {
             return sum % 10 === 0 ? "valid":"invalid";
     }
 
+    async getAllTokens(userId:string){
+
+        try{
+            const tokens = await this.prisma.token.findMany({
+                where:{
+                    userId:userId
+                }
+            })
+
+            return tokens
+        }catch (error) {
+            throw error
+        }
+
+    }
+
 }

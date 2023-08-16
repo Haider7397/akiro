@@ -1,52 +1,30 @@
-import { useGetAuthenticatedUser, useGetToken, useGetTokenStatus } from "Flux/Selector";
-import { useProperty } from "Framework/View";
-import { useInteraction } from "Framework/View/Hooks/useInteraction";
-import { Box, Button, FormControl, Input, Label, Paragraph } from "View/Common";
-import { Spacer } from "View/Common/Layout/Spacer";
+import { useGetAuthenticatedUser} from "Flux/Selector";
 import { PageLayout } from "View/Layout";
-import { useEffect } from "react";
-import Actions ,{ useDispatch } from 'Flux';
 import { Navigate } from "react-router-dom";
-import { tokenSlice } from "Flux/Slice/Token/TokenSlice";
+import { GenerateTokenPage } from "./components/GenerateTokenPage/GenerateTokenPage";
+import { ShowTokenPage } from "./components/ShowTokenPage/ShowTokenPage";
+import { Box, Button } from "View/Common";
+import { useEffect, useState } from "react";
+import { useInteraction } from "Framework/View/Hooks/useInteraction";
+import { Spacer } from "View/Common/Layout/Spacer";
 
 export const HomePage = () => {
 
-    const dispatch = useDispatch()
-    const token = useGetToken()
-    const tokenStatus = useGetTokenStatus()
-
-    const allowedDigits$ = useProperty<string>("123456789");
-    const validateToken$ = useProperty<string>("");
-
-    const onGenerate$ = useInteraction<void>();
-    const onValidate$ = useInteraction<void>();
 
     const authenticatedUser = useGetAuthenticatedUser()
 
-    useEffect(()=>{
-        const onGenerate$$ = onGenerate$.subscribe(()=>{
-            dispatch(
-                Actions[tokenSlice.name].CreateTokenRequest({
-                    id:authenticatedUser?.user.id,
-                    allowedDigits:allowedDigits$.value
-                })
-            )
-        })
+    const onChangeView$ = useInteraction<void>();
 
-        return () => onGenerate$$.unsubscribe()
-    },[onGenerate$, dispatch])
+
+    const [changeView, setChangeView] = useState<boolean>(false);
 
     useEffect(()=>{
-        const onValidate$$ = onValidate$.subscribe(()=>{
-            dispatch(
-                Actions[tokenSlice.name].ValidateTokenRequest({
-                    token:validateToken$.value,
-                })
-            )
+        const onChangeView$$ = onChangeView$.subscribe(()=>{
+            setChangeView(!changeView)
         })
 
-        return () => onValidate$$.unsubscribe()
-    },[onGenerate$, dispatch])
+        return () => onChangeView$$.unsubscribe()
+    },[onChangeView$,changeView])
 
     if (!authenticatedUser) {
         return <Navigate to={'/'} />
@@ -56,25 +34,15 @@ export const HomePage = () => {
     return(
         <PageLayout>
             <Box
-                title={'Generate and validate 16 digit token'}
+            title={!changeView ? 'Generate and validate 16 digit token' : 'Generate tokens in loop'}
             >
-                <Spacer/>
-                <FormControl>
-                    <Label>Specify your digits</Label>
-                    <Input type='text' onChange$={allowedDigits$} placeholder={"123456789"} initialValue={allowedDigits$.value} />
-                </FormControl>
+                <Spacer />
+                <div className="flex justify-end items-center">
+                    <Button variant='primary' onClick$={onChangeView$}>{!changeView ? 'Generate in Loop' : 'Generate single token'}</Button>
+                </div>
                 {
-                    token && <Paragraph color={"primary"} highlight={"bold"}>Token: {token.token}</Paragraph>
+                    !changeView ? <GenerateTokenPage/>:<ShowTokenPage />
                 }
-                <Button  variant='primary' onClick$={onGenerate$}>Generate</Button>
-                <FormControl>
-                    <Label>Validate your token</Label>
-                    <Input type='text' onChange$={validateToken$} placeholder={"XXXX-XXXX-XXXX-XXXX"} />
-                </FormControl>
-                {
-                    tokenStatus && <Paragraph color={"primary"} highlight={"bold"}>TokenStatus: {tokenStatus}</Paragraph>
-                }
-                <Button  variant='primary' onClick$={onValidate$}>Validate</Button>
             </Box>
         </PageLayout>
     );
