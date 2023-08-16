@@ -1,2 +1,2 @@
-cd goLive
+cd backend
 sh start.sh

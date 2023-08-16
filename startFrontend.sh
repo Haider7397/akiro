@@ -1,2 +1,2 @@
-cd f-golive
+cd frontend
 sh start.sh
