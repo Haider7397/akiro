@@ -38,7 +38,7 @@ export const HomePage = () => {
             >
                 <Spacer />
                 <div className="flex justify-end items-center">
-                    <Button variant='primary' onClick$={onChangeView$}>{!changeView ? 'Generate in Loop' : 'Generate single token'}</Button>
+                    <Button variant='primary' onClick$={onChangeView$} value={undefined}>{!changeView ? 'Generate in Loop' : 'Generate single token'}</Button>
                 </div>
                 {
                     !changeView ? <GenerateTokenPage/>:<ShowTokenPage />

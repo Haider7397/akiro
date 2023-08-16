@@ -41,7 +41,7 @@ export const LoginPage = () => {
         <PageLayout>
             <Box 
                  title={'Welcome to the login page'}
-                 action={<Button  variant='primary' onClick$={onSubmit$}>Sign In</Button>}
+                 action={<Button  variant='primary' onClick$={onSubmit$} value={undefined}>Sign In</Button>}
             >
             <Spacer/>
             <FormControl>

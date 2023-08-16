@@ -1,8 +1,7 @@
 import { useGetAuthenticatedUser, useGetToken, useGetTokenStatus } from "Flux/Selector";
 import { useProperty } from "Framework/View";
 import { useInteraction } from "Framework/View/Hooks/useInteraction";
-import { Box, Button, FormControl, Input, Label, Paragraph } from "View/Common";
-import { Spacer } from "View/Common/Layout/Spacer";
+import { Button, FormControl, Input, Label, Paragraph } from "View/Common";
 import { useEffect } from "react";
 import Actions, { useDispatch } from 'Flux';
 import { tokenSlice } from "Flux/Slice/Token/TokenSlice";
@@ -44,7 +43,7 @@ export const GenerateTokenPage = () => {
         })
 
         return () => onValidate$$.unsubscribe()
-    }, [onGenerate$, dispatch])
+    }, [onValidate$, dispatch])
 
 
 
@@ -57,7 +56,7 @@ export const GenerateTokenPage = () => {
             {
                 token && <Paragraph color={"primary"} highlight={"bold"}>Token: {token.token}</Paragraph>
             }
-            <Button variant='primary' onClick$={onGenerate$}>Generate</Button>
+            <Button variant='primary' onClick$={onGenerate$} value={undefined}>Generate</Button>
             <FormControl>
                 <Label>Validate your token</Label>
                 <Input type='text' onChange$={validateToken$} placeholder={"XXXX-XXXX-XXXX-XXXX"} />
@@ -65,7 +64,7 @@ export const GenerateTokenPage = () => {
             {
                 tokenStatus && <Paragraph color={"primary"} highlight={"bold"}>TokenStatus: {tokenStatus}</Paragraph>
             }
-            <Button variant='primary' onClick$={onValidate$}>Validate</Button>
+            <Button variant='primary' onClick$={onValidate$} value={undefined}>Validate</Button>
         </div>
     );
 }

@@ -6,12 +6,14 @@ export interface ITokenState {
   token?: IToken;
   openRequests: string[];
   tokenStatus:string
+  tokens: IToken[]
 }
 
 const initialState: ITokenState = {
   token: undefined,
   openRequests: [],
-  tokenStatus: ""
+  tokenStatus: "",
+  tokens:[]
 };
 
 const reducers = {
@@ -49,6 +51,26 @@ const reducers = {
     state.openRequests = removeRequest(state, action);
   },
   ValidateTokenFailure: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ error: Error }>
+  ) => {
+    state.openRequests = removeRequest(state, action);
+  },
+  GetAllTokenRequest: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ userId: string;}>
+  ) => {
+    console.log(action)
+    state.openRequests.push(action.type);
+  },
+  GetAllTokenSuccess: (
+    state: Draft<ITokenState>,
+    action: PayloadAction<{ data: IToken[]}>
+  ) => {
+    state.tokens = action.payload.data;
+    state.openRequests = removeRequest(state, action);
+  },
+  GetAllTokenFailure: (
     state: Draft<ITokenState>,
     action: PayloadAction<{ error: Error }>
   ) => {

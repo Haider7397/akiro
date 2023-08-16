@@ -28,26 +28,18 @@ export const post = <B, R>(
     );
 };
 
-export const get = <P, R>(
-  path: string,
-  params: P,
-  user?: IUser
-): Observable<R> => {
-  console.groupCollapsed(`[GET] ${path}`);
-  console.log(params);
-  console.log(user);
-  console.groupEnd();
-  return ajax
-    .get(path + `?${stringify(params)}`, {
-      ...(user ? { authorization: `Bearer ${user?.auth.token}` } : {}),
-    })
-    .pipe(
-      map((request) => {
-        if (!request.response) throwError(() => Error(`${request.status}`));
-        return request.response as R;
-      })
-    );
-};
+export const get = <P, R>(path: string, params: P, user?: IUser): Observable<R> => {
+  console.groupCollapsed(`[GET] ${path}`)
+  console.log(params)
+  console.log(user)
+  console.groupEnd()
+  return ajax.get(path + `?${stringify(params)}`, { ...(user ? { authorization: `Bearer ${user?.auth.token}` } : {}) }).pipe(
+    map((request) => {
+      if (!request.response) throwError(() => Error(`${request.status}`))
+      return request.response as R
+    }),
+  )
+}
 
 export const remove = <R>(path: string, user?: IUser): Observable<R> => {
   console.groupCollapsed(`[REMOVE] ${path}`);

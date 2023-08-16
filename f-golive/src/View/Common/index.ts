@@ -15,3 +15,4 @@ export * from 'View/Common/Tooltip/Tooltip';
 export * from 'View/Common/LoadingIndicator/LoadingIndicator';
 export * from 'View/Common/Form/Checkbox/Checkbox';
 export * from 'View/Common/MessageBox/Messagebox';
+export * from 'View/Common/Table/Table'; 

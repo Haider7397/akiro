@@ -21,16 +21,17 @@ const button = cva('py-0.5 px-12 md:px-14 my-2 rounded shadow focus:outline-prim
   },
 })
 
-interface IProps extends PropsWithChildren, VariantProps<typeof button> {
-  onClick$?: Subject<void>;
+interface IProps<T> extends PropsWithChildren, VariantProps<typeof button> {
+  onClick$?: Subject<T>;
   isDisabled?: boolean;
+  value: T 
 }
 
-export const Button = ({ variant, size, children, onClick$, isDisabled }: IProps) => {
+export const Button = <T,>({ variant, size, children, onClick$, isDisabled, value }: IProps<T>) => {
   return (
     <button
       className={button({ variant, size })}
-      onClick={() => onClick$ && onClick$?.next()}
+      onClick={() => onClick$ && onClick$?.next(value)}
       disabled={isDisabled}
     >
       {children}

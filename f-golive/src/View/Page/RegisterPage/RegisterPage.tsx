@@ -40,7 +40,7 @@ export const RegisterPage = () => {
         <PageLayout>
             <Box 
                  title={'Welcome to the register page'}
-                 action={<Button  variant='primary' onClick$={onSubmit$}>Sign Up</Button>}
+                 action={<Button  variant='primary' onClick$={onSubmit$} value={undefined}>Sign Up</Button>}
             >
             <Spacer/>
             <FormControl>
