@@ -5,6 +5,7 @@ import { IUser } from "../Model";
 import { AjaxResponse } from "rxjs/ajax";
 
 export * as AuthenticationRepository from './Authentication/AuthenticationRepository'
+export * as TokenRepository from './Token/TokenRepository'
 
 export const post = <B, R>(
   path: string,

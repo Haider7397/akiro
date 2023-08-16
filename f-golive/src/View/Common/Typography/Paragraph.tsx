@@ -26,6 +26,8 @@ interface IProps extends PropsWithChildren, VariantProps<typeof paragraph> {
 
 export const Paragraph = ({ children, color }: IProps) => {
   return (
-    <p className={paragraph({ color })}>{children}</p>
+    <div className='flex justify-center items-center'>
+      <p className={paragraph({ color })}>{children}</p>
+    </div>
   )
 }
