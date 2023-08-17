@@ -4,6 +4,7 @@ import { useInteraction } from 'Framework/View/Hooks/useInteraction'
 import Actions,{ useDispatch } from 'Flux'
 import { authenticationSlice } from 'Flux/Slice/Authentication/AuthenticationSlice'
 import { Button } from 'View/Common'
+import { tokenSlice } from 'Flux/Slice/Token/TokenSlice'
 
 
 function classNames(...classes: any[]) {
@@ -20,6 +21,9 @@ export const Header = () =>{
             dispatch(
                 Actions[authenticationSlice.name].reset()
             )
+            dispatch(
+              Actions[tokenSlice.name].reset()
+          )
         })
 
         return () => onLogout$$.unsubscribe()
