@@ -79,9 +79,38 @@ export class TokenService {
                     userId:userId
                 }
             })
+            const total = await this.prisma.token.count({where:{userId:userId}})
+            const totalValid = await this.prisma.token.count(
+                {
+                    where:{
+                        userId:userId,
+                        validityStatus:"valid"
+                    }
+                }
+            )
+            const totalInvalid = await this.prisma.token.count(
+                {
+                    where:{
+                        userId:userId,
+                        validityStatus:"invalid"
+                    }
+                }
+            )
+            const totalUnknown= await this.prisma.token.count(
+                {
+                    where:{
+                        userId:userId,
+                        validityStatus:"unknown"
+                    }
+                }
+            )
 
             return {
-                data:tokens
+                data:tokens,
+                count: total,
+                valid:totalValid,
+                invalid:totalInvalid,
+                unknown:totalUnknown,
             }
         }catch (error) {
             throw error

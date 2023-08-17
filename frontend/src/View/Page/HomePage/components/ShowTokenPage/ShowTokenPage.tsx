@@ -3,7 +3,7 @@ import { Button, FormControl, Input, Label, Table } from "View/Common";
 import { useEffect, useState } from "react";
 import Actions, { useDispatch } from 'Flux';
 import { tokenSlice } from "Flux/Slice/Token/TokenSlice";
-import { useGetAllToken, useGetAuthenticatedUser, useGetTokenStatus } from "Flux/Selector";
+import { useGetAllToken, useGetAuthenticatedUser, useGetTotal, useGetTotalInvalid, useGetTotalUnknown, useGetTotalValid } from "Flux/Selector";
 import { useInteraction } from "Framework/View/Hooks/useInteraction";
 import { Spacer } from "View/Common/Layout/Spacer";
 
@@ -24,7 +24,10 @@ export const ShowTokenPage = () =>{
  
     const authenticatedUser = useGetAuthenticatedUser()
     const tokens = useGetAllToken()
-    const validityStatus = useGetTokenStatus()
+    const total = useGetTotal()
+    const valid = useGetTotalValid()
+    const invalid = useGetTotalInvalid()
+    const unknown = useGetTotalUnknown()
 
     useEffect(() => {
         const onStart$$ = onStart$.subscribe((value:any) => {
@@ -110,10 +113,10 @@ export const ShowTokenPage = () =>{
             }
             <Spacer/>
             <div className="flex justify-evenly">
-                <Button variant={"primary"} onClick$={onSort$} value={"all"}>All</Button>
-                <Button variant={"primary"} onClick$={onSort$} value={"valid"}>Valid</Button>
-                <Button variant={"primary"} onClick$={onSort$} value={"invalid"}>Invalid</Button>
-                <Button variant={"primary"} onClick$={onSort$} value={"unknown"}>Unknown</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"all"}>All({total})</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"valid"}>Valid({valid})</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"invalid"}>Invalid({invalid})</Button>
+                <Button variant={"primary"} onClick$={onSort$} value={"unknown"}>Unknown({unknown})</Button>
             </div>
             <Table>
                 <Table.Head>

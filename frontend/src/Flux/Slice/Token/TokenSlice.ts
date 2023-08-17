@@ -6,14 +6,22 @@ export interface ITokenState {
   token?: IToken;
   openRequests: string[];
   tokenStatus:string
-  tokens: IToken[]
+  tokens: IToken[],
+  count:number,
+  valid:number,
+  invalid:number,
+  unknown:number
 }
 
 const initialState: ITokenState = {
   token: undefined,
   openRequests: [],
   tokenStatus: "",
-  tokens:[]
+  tokens:[],
+  count:0,
+  valid:0,
+  invalid:0,
+  unknown:0,
 };
 
 const reducers = {
@@ -64,9 +72,13 @@ const reducers = {
   },
   GetAllTokenSuccess: (
     state: Draft<ITokenState>,
-    action: PayloadAction<{ data: IToken[]}>
+    action: PayloadAction<{ data: IToken[],count:number,valid:number,invalid:number,unknown:number}>
   ) => {
     state.tokens = action.payload.data;
+    state.count = action.payload.count;
+    state.valid = action.payload.valid;
+    state.invalid = action.payload.invalid;
+    state.unknown = action.payload.unknown;
     state.openRequests = removeRequest(state, action);
   },
   GetAllTokenFailure: (

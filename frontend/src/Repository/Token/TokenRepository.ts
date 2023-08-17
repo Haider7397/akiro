@@ -10,7 +10,7 @@ export const validate = (data:{ token: string} ,user?:IUser): Observable<{data:I
     return post(`${Environment.API_URL}/token/validate`, data, user)
 }
 
-export const getAllTokens = (data: {userId:string}, user?: IUser): Observable<{data:IToken[]}> => {
+export const getAllTokens = (data: {userId:string}, user?: IUser): Observable<{data:IToken[],count:number,valid:number,invalid:number,unknown:number}> => {
     return get(`${Environment.API_URL}/token/getAll/${data.userId}`,data, user)
 }
 

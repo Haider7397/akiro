@@ -1,3 +1,7 @@
 export * from './GetToken/GetTokenSelector'
 export * from './GetTokenStatus/GetTokenStatusSelector'
 export * from './GetAllToken/GetAllTokenSelector'
+export * from './GetTotal/GetTotalSelector'
+export * from './GetTotalValid/GetTotalValidSelector'
+export * from './GetTotalInvalid/GetTotalInvalidSelector'
+export * from './GetTotalUnknown/GetTotalUnknownSelector'
